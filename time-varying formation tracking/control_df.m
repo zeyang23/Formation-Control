@@ -22,6 +22,7 @@ Hv_dot = cal_Hv_dot(t);
 ksi_dot = (kron(eye(10),(B2*K1+B1*B2'))-kron(L(:,:,index),B2*K2))*ksi...
 -(kron(eye(10),B2*K1)-kron(L(:,:,index),B2*K2))*H+...
 kron(eye(10),B2)*Hv_dot;
+
 end
 
 function H=cal_H(t)
@@ -43,6 +44,6 @@ Hv_dot = zeros(20,1);
 for i =1:10
     hiv_dot = [  -r*w^2*sin(w*t+(i-1)*pi/5);
        -r*w^2*cos(w*t+(i-1)*pi/5)]; 
-    Hv_dot(2*(i-1)+1:2*i,1) = hiv_dot;
+    Hv_dot(2*i-1:2*i,1) = hiv_dot;
 end
 end
