@@ -10,7 +10,7 @@ B1 = [1;0];
 K1_single=[-0.8,-0.8];
 P_single = solveP(K1_single);
 
-% 升维，此时机器人为二维坐标
+% 升维，此时机器人为二维坐�?
 K1 = kron(eye(2),K1_single);
 P=kron(eye(2),P_single);
 
@@ -75,36 +75,32 @@ end
 axis equal
 grid on
 
-% 
-% figure(2)
-% hold on
-% center_vx =zeros(1,length(t));
-% center_vy = zeros(1,length(t));
-% for i = 1:4:40
-%     center_vx = center_vx+y(i+1,:);
-%     center_vy = center_vy+y(i+3,:);
-% end
-% center_vx=center_vx/10;
-% center_vy=center_vy/10;
-% hv=plot(center_vx,center_vy);
-% h3=plot(center_vx(1,end),center_vy(1,end),'p','MarkerSize',12);
-% set(h3,'MarkerFaceColor',get(hv,'color'));
-% h4=plot(center_vx(1,1),center_vy(1,1),'o','MarkerSize',8);
-% set(h4,'MarkerFaceColor',get(hv,'color'));
-% for i=2:2:20
-%     plot(y(2*i-2,1),y(2*i,1),'o')
-% end
-% for i=2:2:20
-%     h=plot(y(2*i-2,end),y(2*i,end),'o','MarkerSize',10);
-%     set(h,'MarkerFaceColor',get(h,'color'));
-% end
-% for i=2:2:20
-%     plot(y(2*i-2,:),y(2*i,:))
-% end
-% 
-% axis equal
-% grid on
-% 
-% 
-% 
-% 
+
+figure(2)
+hold on
+center_vx =zeros(1,length(t));
+center_vy = zeros(1,length(t));
+for i = 1:4:40
+    center_vx = center_vx+y(i+1,:);
+    center_vy = center_vy+y(i+3,:);
+end
+center_vx=center_vx/10;
+center_vy=center_vy/10;
+hv=plot(center_vx,center_vy);
+h3=plot(center_vx(1,end),center_vy(1,end),'p','MarkerSize',12);
+set(h3,'MarkerFaceColor',get(hv,'color'));
+h4=plot(center_vx(1,1),center_vy(1,1),'o','MarkerSize',8);
+set(h4,'MarkerFaceColor',get(hv,'color'));
+for i=2:2:20
+    plot(y(2*i-2,1),y(2*i,1),'o')
+end
+for i=2:2:20
+    h=plot(y(2*i-2,end),y(2*i,end),'o','MarkerSize',10);
+    set(h,'MarkerFaceColor',get(h,'color'));
+end
+for i=2:2:20
+    plot(y(2*i-2,:),y(2*i,:))
+end
+
+axis equal
+grid on
