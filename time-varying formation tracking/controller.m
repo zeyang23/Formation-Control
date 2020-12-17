@@ -5,6 +5,8 @@ function ksi_dot = controller(t,ksi,K1_single,cal_h,cal_hvdot,L)
     % cal_hvdot: function. return (2*N,1) vector
     % L 3d array all the interaction Laplacians
     
+    N=size(ksi,1)/4;
+    
     B2_single=[0;1];
     B1_single=[1;0];
     
@@ -28,6 +30,6 @@ function ksi_dot = controller(t,ksi,K1_single,cal_h,cal_hvdot,L)
     % choose a Laplacian in L
     index=1;
     
-    ksi_dot = (kron(eye(10),(B2*K1+B1*B2'))-kron(L(:,:,index),B2*K2))*ksi...
-    -(kron(eye(10),B2*K1)-kron(L(:,:,index),B2*K2))*H+kron(eye(10),B2)*Hv_dot;
+    ksi_dot = (kron(eye(N),(B2*K1+B1*B2'))-kron(L(:,:,index),B2*K2))*ksi...
+    -(kron(eye(N),B2*K1)-kron(L(:,:,index),B2*K2))*H+kron(eye(N),B2)*Hv_dot;
 end
