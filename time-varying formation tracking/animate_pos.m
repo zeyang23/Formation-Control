@@ -1,5 +1,5 @@
-function animate_pos(t,state)
-
+function animate_pos(t,state,fps)
+close all;
 n =length(t);
 m = size(state,1)/4; % number of robots
 
@@ -32,7 +32,7 @@ for i = 1:n
     for j =1:m
         pics(j)=plot(state(4*j-3,i),state(4*j-1,i),'o');
     end
-    pause(0.01);
+    pause(1/fps);
     delete(pics);
 end
 end

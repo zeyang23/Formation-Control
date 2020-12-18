@@ -6,6 +6,7 @@ connect2=[1,2;2,3;3,4];
 connect1=[1,2;2,3;3,4;4,1];
 connects={connect1,connect2};
 
+
 Target1 = [85,5;85,-5;75,-5;75,5];
 Target2 = [90,0;88,0;84,0;82,0];
 Targets(:,:,1) = Target1;
@@ -39,7 +40,8 @@ Tconv = 100;
 
 % define anonymous function for RK4
 
-control=@(t,ksi) controller_dfs(t,ksi,K1_single,F1,h,Tconv);
+Ttotal=20;
+control=@(t,ksi) controller_dfs_variant(t,ksi,K1_single,F1,h,Tconv,Ttotal);
 
 
 % solve the IVP using RK4

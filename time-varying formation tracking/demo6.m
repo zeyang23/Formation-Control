@@ -4,12 +4,11 @@ clc
 
 connect2=[1,2;2,3;3,4];
 connect1=[1,2;2,3;3,4;4,1];
-connects={connect1,connect2};
+connects={connect1};
 
-Target1 = [85,5;85,-5;75,-5;75,5];
-Target2 = [90,0;88,0;84,0;82,0];
+Target1 = [145,5;145,-5;135,-5;135,5];
 Targets(:,:,1) = Target1;
-Targets(:,:,2) = Target2;
+
 
 % ksi = zeros(16,1);
 % ksi=[2;0;2;0;2;0;-2;0;-2;0;-2;0;-2;0;2;0]+4;
@@ -38,7 +37,6 @@ K1_single=[-5,-5];
 Tconv = 100;
 
 % define anonymous function for RK4
-
 control=@(t,ksi) controller_dfs(t,ksi,K1_single,F1,h,Tconv);
 
 

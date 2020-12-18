@@ -1,6 +1,6 @@
 % dynamic formation selection
-function index=dfs(t,ksi,Formations,h)
+function index=dfs(t,ksi,Formations,h,Tconv)
     gamma=0.1;
-    Formations.update_estimate(ksi,gamma,h);
+    Formations.update_estimate(ksi,gamma,h,Tconv);
     index=Formations.current_index;
 end

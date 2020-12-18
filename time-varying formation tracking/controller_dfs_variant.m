@@ -1,5 +1,5 @@
 % controller for dynamic formation selection
-function ksi_dot = controller_dfs(t,ksi,K1_single,Formations,h,Tconv)
+function ksi_dot = controller_dfs_variant(t,ksi,K1_single,Formations,h,Tconv,Ttotal)
 
     % K1  (2,1)   vector
     % cal_h: function. return (4*N,1) vector
@@ -16,6 +16,16 @@ function ksi_dot = controller_dfs(t,ksi,K1_single,Formations,h,Tconv)
     H=get_ksi(Targets(:,:,index));
     
     Hv_dot=zeros(2*Formations.robot_number,1);
+    for i=1:length(ksi)/4
+        Hv_dot(2*i-1)=H(4*i-3)/Ttotal;
+    end
+    
+    ratio=t/Ttotal;
+    for i=1:4:length(ksi)
+        H(i)=ratio*H(i);
+    end
+    
+    
     
     
     %% formation tracking controller

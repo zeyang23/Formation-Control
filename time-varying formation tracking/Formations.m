@@ -89,15 +89,16 @@ classdef Formations < handle
             
             % check if all the agents make the same decision
             table = tabulate(robot_decisions);
-            if size(table,1)==1
+            if table(end) == 100
                 obj.current_index=robot_decisions(1);
             else
-                warning("decision diverge");
+                warning("%d decision diverge",obj.decision_counter);
+                
                 obj.current_index=round(sum(robot_decisions)/obj.robot_number);
             end
         end
         
-        function update_estimate(obj,ksi,gamma,h)
+        function update_estimate(obj,ksi,gamma,h,Tconv)
             if (obj.decision_counter == 1)
                 obj.init_estimate(ksi,gamma);
             end  
@@ -111,8 +112,8 @@ classdef Formations < handle
                     
                 obj.global_error_estimate(:,k)=obj.global_error_estimate(:,k)+global_error_estimate_dot*h;
             end
-                       
-            if (mod(obj.decision_counter,6) == 0)
+            obj.decision_counter = obj.decision_counter+1;    
+            if (mod(obj.decision_counter,Tconv) == 0)
                 obj.make_decision();
                 obj.init_estimate(ksi,gamma);
             end        
