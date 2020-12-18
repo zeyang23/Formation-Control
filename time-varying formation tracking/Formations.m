@@ -7,7 +7,7 @@ classdef Formations < handle
         Laplacians;% 3-d
         Connects;
         current_index;% Current formation tracked by robots
-        Formation_numbers;
+        formation_number;
     end
     
     methods
@@ -16,14 +16,14 @@ classdef Formations < handle
             item.Targets=targets;
             item.Connects=connects;
             item.current_index=1;
-            item.Formation_numbers = size(targets,3);
+            item.formation_number = size(targets,3);
         end
                
         function cal_matrices(obj)
               n = obj.robot_number;% n is the robot number
-              obj.Laplacians =zeros(n,n,obj.Formation_numbers);
-              obj.Incidences = cell(1,obj.Formation_numbers);
-            for k = 1:obj.Formation_numbers
+              obj.Laplacians =zeros(n,n,obj.formation_number);
+              obj.Incidences = cell(1,obj.formation_number);
+            for k = 1:obj.formation_number
                 connects_k = obj.Connects{k};
                  m = size(connects_k,1);% m is the edge number
                  D = zeros(n,m); 
@@ -40,9 +40,9 @@ classdef Formations < handle
       
         
         function global_error=cal_global_error(obj,ksi)
-            global_error=zeros(obj.Formation_numbers,1);
+            global_error=zeros(obj.formation_number,1);
             pos = get_pos(ksi);
-            for i =1 : obj.Formation_numbers
+            for i =1 : obj.formation_number
                 for j=1:obj.robot_number
                     for k =1:obj.robot_number
                         temp = norm(pos(j,:)-pos(k,:)-obj.Targets(j,:,i)+obj.Targets(k,:,i));
@@ -54,20 +54,19 @@ classdef Formations < handle
         
         
         function local_error=cal_local_error(obj,ksi)
-            local_error=zeros(obj.robot_number,obj.Formation_numbers);
+            local_error=zeros(obj.robot_number,obj.formation_number);
              pos = get_pos(ksi);
-            for k =1:obj.Formation_numbers
+            for k =1:obj.formation_number
                 for i=1:obj.robot_number        
                     neighbor = find(obj.Laplacians(i,:,k) ==-1);
                     n_neighbor = length(neighbor);
                     for j =1:n_neighbor
-                         temp = norm(pos(i,:)-pos(j,:)-obj.Targets(i,:,k)+obj.Targets(neighbor(j),:,k));
+                         temp = norm(pos(i,:)-pos(neighbor(j),:)-obj.Targets(i,:,k)+obj.Targets(neighbor(j),:,k));
                          local_error(i,k) = local_error(i,k)+temp^2;
                     end
                 end
             end
             
-        end
-             
+        end            
     end
 end

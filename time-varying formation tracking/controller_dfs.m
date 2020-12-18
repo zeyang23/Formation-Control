@@ -1,8 +1,6 @@
 % controller for dynamic formation selection
 function ksi_dot = controller_dfs(t,ksi,K1_single,Formations)
-    % ksi (5*N,1) vector 
-    % including local time counter tau of each agent
-    
+
     % K1  (2,1)   vector
     % cal_h: function. return (4*N,1) vector
     % cal_hvdot: function. return (2*N,1) vector
