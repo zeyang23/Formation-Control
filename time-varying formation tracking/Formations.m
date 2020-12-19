@@ -112,7 +112,7 @@ classdef Formations < handle
                     
                 obj.global_error_estimate(:,k)=obj.global_error_estimate(:,k)+global_error_estimate_dot*h;
             end
-            obj.decision_counter = obj.decision_counter+1;    
+            obj.update_counter();  
             if (mod(obj.decision_counter,Tconv) == 0)
                 obj.make_decision();
                 obj.init_estimate(ksi,gamma);
