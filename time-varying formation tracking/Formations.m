@@ -99,9 +99,13 @@ classdef Formations < handle
         end
         
         function update_estimate(obj,ksi,gamma,h,Tconv)
+            
             if (obj.decision_counter == 1)
                 obj.init_estimate(ksi,gamma);
             end  
+            
+            obj.cal_global_error(ksi);
+            obj.cal_local_error(ksi);
             
             for k=1:obj.formation_number
                 estimator_state_dot=-obj.Laplacians(:,:,k)*obj.global_error_estimate(:,k);
@@ -130,6 +134,12 @@ classdef Formations < handle
         
         function update_counter(obj)
             obj.decision_counter=obj.decision_counter+1;
+        end
+        
+        function centralized_decision(obj,ksi)
+            obj.cal_global_error(ksi);
+            [~,index]=min(obj.global_error);
+            obj.current_index=index;
         end
         
     end

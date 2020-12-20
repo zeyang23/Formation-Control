@@ -1,15 +1,17 @@
-% dynamic formation selection structure
-% decentralized case
+% dynamic formation selection structure. 
+% centralized case
 clear
 clc
 
 connect2=[1,2;2,3;3,4];
 connect1=[1,2;2,3;3,4;4,1];
-connects={connect1};
+connects={connect1,connect2};
 
-Target1 = [145,5;145,-5;135,-5;135,5];
+
+Target1 = [85,5;85,-5;75,-5;75,5];
+Target2 = [90,0;88,0;84,0;82,0];
 Targets(:,:,1) = Target1;
-
+Targets(:,:,2) = Target2;
 
 % ksi = zeros(16,1);
 % ksi=[2;0;2;0;2;0;-2;0;-2;0;-2;0;-2;0;2;0]+4;
@@ -38,8 +40,10 @@ K1_single=[-5,-5];
 Tconv = 100;
 
 % define anonymous function for RK4
-control=@(t,ksi) controller_dfs(t,ksi,K1_single,F1,h,Tconv);
 
+Ttotal=20;
+control=@(t,ksi) controller_cfs_variant(t,ksi,K1_single,F1,Ttotal);
+% control=@(t,ksi) controller_cfs(t,ksi,K1_single,F1);
 
 % solve the IVP using RK4
 [t,state] = RK4(control,tspan,ksi0,h);

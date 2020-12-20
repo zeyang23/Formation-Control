@@ -1,6 +1,6 @@
-% controller for dynamic formation selection
-% decentralized case
-function ksi_dot = controller_dfs_variant(t,ksi,K1_single,Formations,h,Tconv,Ttotal)
+% controller for dynamic formation selection.
+% centralized case
+function ksi_dot = controller_cfs(t,ksi,K1_single,Formations)
 
     % K1  (2,1)   vector
     % cal_h: function. return (4*N,1) vector
@@ -9,7 +9,7 @@ function ksi_dot = controller_dfs_variant(t,ksi,K1_single,Formations,h,Tconv,Tto
     
     
     %% dynamic formation selection
-    index=dfs(t,ksi,Formations,h,Tconv);
+    index=cfs(t,ksi,Formations);
     L=Formations.Laplacians;
     
     Targets=Formations.Targets;
@@ -17,16 +17,6 @@ function ksi_dot = controller_dfs_variant(t,ksi,K1_single,Formations,h,Tconv,Tto
     H=get_ksi(Targets(:,:,index));
     
     Hv_dot=zeros(2*Formations.robot_number,1);
-    for i=1:length(ksi)/4
-        Hv_dot(2*i-1)=H(4*i-3)/Ttotal;
-    end
-    
-    ratio=t/Ttotal;
-    for i=1:4:length(ksi)
-        H(i)=ratio*H(i);
-    end
-    
-    
     
     
     %% formation tracking controller

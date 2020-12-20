@@ -1,4 +1,5 @@
 % controller for dynamic formation selection
+% decentralized case
 function ksi_dot = controller_dfs(t,ksi,K1_single,Formations,h,Tconv)
 
     % K1  (2,1)   vector

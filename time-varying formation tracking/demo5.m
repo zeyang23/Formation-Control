@@ -1,4 +1,5 @@
 % dynamic formation selection structure
+% decentralized case
 clear
 clc
 
