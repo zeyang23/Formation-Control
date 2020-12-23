@@ -16,7 +16,7 @@ function state = uav_formation_update(ksi_dot,quads,accel)
             a_d = accel*a_d/norm(a_d);
         end
         %[u1,u2] = quads{i}.uav_controller(p_d,v_d,a_d,j_d,yaw,yaw_d,0.5,0,diag([1,1,1.2]),0);    
-    	[u1,u2] = quads{i}.uav_controller(p_d,v_d,a_d,j_d,yaw,yaw_d,0.5,0.8,diag([1,1,1.2]),diag([0.1,0.1,1.2]));    
+    	[u1,u2] = quads{i}.uav_controller(p_d,v_d,a_d,j_d,yaw,yaw_d,0,0,diag([3,3,1]),diag([0.6,0.6,1.2]));    
         
         rotorSpeeds = get_rotorspeed(u1,u2,quads{i}.k,quads{i}.L,quads{i}.b);    
     	quads{i}.updateState(rotorSpeeds);

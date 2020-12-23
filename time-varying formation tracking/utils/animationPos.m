@@ -47,17 +47,28 @@ classdef animationPos < handle
                 desiredStates: the No.i+1 desired states
         %}
         function animation_update(item,states,desiredStates,i)
-            cal_limits(item,states(:,i+1),desiredStates);
-            set(gca,'XLim', [item.xlim(1),item.xlim(2)+2], 'YLim', [item.ylim(1)-2,item.ylim(2)+2]);grid on;hold on;
-            delete(item.desiredPos);
-            delete(item.actualPos);
-            delete(item.panPos);
-            num = item.robotNumber;
-            for k = 1:num
-                item.desiredPos(k) = plot(desiredStates(4*k-3),desiredStates(4*k-1),'*','Color',[k/num,k/num,1-k/num]);
-                item.actualPos(k) = plot(states(4*k-3,i+1),states(4*k-1,i+1),'o','MarkerFaceColor',[k/num,k/num,1-k/num],'MarkerEdgeColor','none');
-                % item.panPos(k) = item.CirclePlot(states(4*k-3,i+1),states(4*k-1,i+1),item.UAVRadius,k);
-                plot(states(4*k-3,1:i+1),states(4*k-1,1:i+1),'Color',[k/num,k/num,1-k/num]);
+            clf
+            duration = 1;
+            if size(states,2) <= duration
+                cal_limits(item,states(:,i+1),desiredStates);
+                set(gca,'XLim', [item.xlim(1),item.xlim(2)+2], 'YLim', [item.ylim(1)-2,item.ylim(2)+2]);grid on;hold on;
+                num = item.robotNumber;
+                for k = 1:num
+                    item.desiredPos(k) = plot(desiredStates(4*k-3),desiredStates(4*k-1),'*','Color',[k/num,k/num,1-k/num]);
+                    item.actualPos(k) = plot(states(4*k-3,i+1),states(4*k-1,i+1),'o','MarkerFaceColor',[k/num,k/num,1-k/num],'MarkerEdgeColor','none');
+                    % item.panPos(k) = item.CirclePlot(states(4*k-3,i+1),states(4*k-1,i+1),item.UAVRadius,k);
+                    plot(states(4*k-3,1:i+1),states(4*k-1,1:i+1),'Color',[k/num,k/num,1-k/num]);
+                end
+            else
+                cal_limits(item,states(:,i+1-duration:i+1),desiredStates);
+                set(gca,'XLim', [item.xlim(1),item.xlim(2)+2], 'YLim', [item.ylim(1)-2,item.ylim(2)+2]);grid on;hold on;
+                num = item.robotNumber;
+                for k = 1:num
+                    item.desiredPos(k) = plot(desiredStates(4*k-3),desiredStates(4*k-1),'*','Color',[k/num,k/num,1-k/num]);
+                    item.actualPos(k) = plot(states(4*k-3,i+1-duration:i+1),states(4*k-1,i+1-duration:i+1),'o','MarkerFaceColor',[k/num,k/num,1-k/num],'MarkerEdgeColor','none');
+                    % item.panPos(k) = item.CirclePlot(states(4*k-3,i+1),states(4*k-1,i+1),item.UAVRadius,k);
+                    plot(states(4*k-3,i+1-duration:i+1),states(4*k-1,i+1-duration:i+1),'Color',[k/num,k/num,1-k/num]);
+                end
             end
             axis equal; 
 %             M = getframe;
@@ -67,7 +78,7 @@ classdef animationPos < handle
         end
         
         function cal_limits(item,states,desiredStates)
-            states = [states;desiredStates];
+            states = [states,desiredStates];
             item.xlim(1) = floor(min(min(states(1:4:end)),item.xlim(1)));
             item.xlim(2) = ceil(max(max(states(1:4:end)),item.xlim(2)));
             item.ylim(1) = floor(min(min(states(3:4:end)),item.ylim(1)));

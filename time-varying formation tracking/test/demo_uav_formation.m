@@ -3,15 +3,15 @@
 clear all; close all;
 
 % define total simulation time
-num_uav = 4;
+num_uav = 10;
 v_x = 2;
 num_formation = 3;
-accel = 15;
+accel = 3;
 alter_a = 10;
 dt = 0.01;
 tspan = 30;
 
-x_start = 0;
+x_start = -10;
 width = 1;
 col_size = 1;
 col_number = 0;
@@ -44,9 +44,13 @@ for k = 1:num_formation
 end
 
 % define initial state for all agents
-pos0(:,:) = Targets(:,:,1);
-pos0(:,1) = pos0(:,1)-x_start;
-
+R = 2.5;
+for i = 1:num_uav
+    r = R*rand();
+    theta = 2*pi*rand() - pi;
+    pos0(i,1) = r*cos(theta) + x_start;
+    pos0(i,2) = r*sin(theta);
+end
 F1 = Formations(Targets,connects);
 F1.cal_matrices()
 
