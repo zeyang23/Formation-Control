@@ -2,30 +2,48 @@
 % decentralized case
 clear all; close all;
 
-connect2=[1,2;2,3;3,4];
-connect1=[1,2;2,3;3,4;4,1];
-connects={connect1,connect2};
-
-
-Target1 = [85,5;85,-5;75,-5;75,5];
-Target2 = [90,0;88,0;84,0;82,0];
-Targets(:,:,1) = Target1;
-Targets(:,:,2) = Target2;
-
 % define total simulation time
 num_uav = 4;
-noise = 0;
+num_formation = 2;
+accel = 10;
 dt = 0.01;
 tspan = 30;
 
+x_start = 0;
+width = 1;
+col_size = 1;
+col_number = 0;
+Targets = zeros(num_uav,2,num_formation);
+for j = 1:num_formation
+    width = (1-(j-1)/num_formation)*1;
+    for i = 1:num_uav
+        if mod(i,2) == 1
+            Targets(i,:,j) = [x_start + col_number * col_size,width / 2];
+            col_number = col_number + 1;
+        else
+            Targets(i,:,j) = [x_start + col_number * col_size - col_size/2,- width / 2];
+        end
+    end
+%     scatter(Targets(:,1,j),Targets(:,2,j))
+%     axis equal
+end
+
+connects = cell(1,num_formation);
+for k = 1:num_formation
+    connect = [];
+    for i = 1:num_uav
+        for j = i:num_uav
+            if norm(Targets(i,:,k)-Targets(j,:,k)) < 3
+                connect = [connect;[i,j]];
+            end
+        end
+    end
+    connects{k} =connect;
+end
+
 % define initial state for all agents
-% define initial state for all agents
-ksi0_1 = [-50,0,2.5,0]';
-ksi0_2 = [-50,0,-2.5,0]';
-ksi0_3 = [-45,0,-2.5,0]';
-ksi0_4 = [-45,0,2.5,0]';
-ksi0 = [ksi0_1;ksi0_2;ksi0_3;ksi0_4];
-pos0 = get_pos(ksi0);
+pos0(:,:) = Targets(:,:,1);
+pos0(:,1) = pos0(:,1)-x_start;
 
 F1 = Formations(Targets,connects);
 F1.cal_matrices()
@@ -35,8 +53,8 @@ K1_single=[-5,-5];
 
 % define anonymous function for simulation
 Tconv = 100;
-Ttotal = 20;
-dfs_control = @(t,ksi) controller_dfs_variant(t,ksi,K1_single,F1,dt,Tconv,Ttotal);
+v_x = 2;
+dfs_control = @(t,ksi) controller_dfs_variant(t,ksi,K1_single,F1,dt,Tconv,v_x);
 
 % simulate on uav dynamics
 params = load_params();
@@ -47,9 +65,16 @@ for i = 1:num_uav
     quads{i}.dt = dt;
 end
 
-state = [];
-for t = 0:dt:tspan
-    ksi = zeros(1,num_uav);
+state0 = [];
+for i = 1:num_uav
+    state0 = [state0;[pos0(i,1);0;pos0(i,2);0]];
+end
+% ani = animationPos(state0,"formation control",30);
+
+t = 0:dt:tspan;
+state = state0;
+for k = 1:size(t,2)-1
+    ksi = zeros(4*num_uav,1);
     for i = 1:num_uav
         ksi(4*i-3,1) = quads{i}.position(1);
         ksi(4*i-2,1) = quads{i}.velocity(1);
@@ -57,11 +82,9 @@ for t = 0:dt:tspan
         ksi(4*i,1) = quads{i}.velocity(2);
     end
         
-	ksi_dot = dfs_control(t,ksi);
-	state_new = uav_formation_update(ksi_dot,quads,noise);
-	state = [state,state_new];
+	ksi_dot = dfs_control(t(k),ksi);
+	state_new = uav_formation_update(ksi_dot,quads,accel);
+% 	ani.animation_update(state,state_new,k-1);
+    state = [state,state_new];
 end
-t = [0:dt:tspan];
-animate_pos(t,state,10000);
-hold off;
 plot_pos(t,state);

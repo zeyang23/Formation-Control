@@ -66,7 +66,7 @@ for i=1:num
                     break;
                 end
                 if j==length(theta)
-                    disp('No proper Acceleration Correct find!');
+                    %disp('No proper Acceleration Correct find!');
                 end
             end
         end
