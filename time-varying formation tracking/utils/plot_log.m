@@ -7,12 +7,15 @@ function plot_log(F1)
     end
     title('global error of all formations')
     
+    figure()
+    number = 0;
     for i = 1 : F1.robot_number
-        figure()
         hold on
         for j = 1 : F1.formation_number
+            number = number+1;
             plot(ts,F1.local_error_log{j}(i,:))
+            labels{number} = ['robot index: ',num2str(i),' formation index: ',num2str(j)];
         end
     end
-        
+    legend(labels)
 end

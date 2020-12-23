@@ -4,8 +4,10 @@ clear all; close all;
 
 % define total simulation time
 num_uav = 4;
-num_formation = 2;
-accel = 10;
+v_x = 2;
+num_formation = 3;
+accel = 15;
+alter_a = 10;
 dt = 0.01;
 tspan = 30;
 
@@ -52,9 +54,8 @@ F1.cal_matrices()
 K1_single=[-5,-5];
 
 % define anonymous function for simulation
-Tconv = 100;
-v_x = 2;
-dfs_control = @(t,ksi) controller_dfs_variant(t,ksi,K1_single,F1,dt,Tconv,v_x);
+Tconv = 100000;
+dfs_control = @(t,ksi) controller_dfs_variant(t,ksi,K1_single,F1,dt,Tconv,v_x,alter_a);
 
 % simulate on uav dynamics
 params = load_params();

@@ -1,4 +1,4 @@
-function ksi_dot_add = obstacle(ksi,ksi_dot)
+function ksi_dot_add = obstacle(ksi,ksi_dot,alter_a)
 % num为机器人数量
 ksi_dot_add=zeros(size(ksi));
 pos = get_pos(ksi);
@@ -7,7 +7,7 @@ acl = get_acl(ksi_dot);
 num=length(ksi)/4;dt=0.01;
 center=sum(pos,1)/num;
 
-rad=0.3;% 无人机半径
+rad=0.5;% 无人机半径
 %  定义障碍物位置，扩展半径，将机器人可视为质点
 fac=[-1 -1;1 -1;1 1;-1 1];fac2=[-1 0;1 0;1 0;-1 0];fac3=[0 -1;0 -1;0 1;0 1];
 v1 = [5 0.5; 15 0.5;15 3;5 3];
@@ -23,7 +23,7 @@ Obs={v1,v2};
 % 碰撞检测与加速度修正
 PosNext=pos+vel*dt+acl/2*dt^2;
 AclCorrect=zeros(num,2);
-gain=50;
+gain=alter_a;
 for i=1:num
     % Obs为减速区，OriObs为不能碰撞的区域
     flag=Obstect(PosNext(i,:),Obs);
