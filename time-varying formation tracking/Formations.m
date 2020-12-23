@@ -140,6 +140,15 @@ classdef Formations < handle
                 obj.make_decision();
                 obj.init_estimate(ksi,gamma);
             end        
+%             if (mod(obj.decision_counter,Tconv) == 0)
+%                 obj.make_decision();
+%                 
+%             end    
+%             
+%             if (mod(obj.decision_counter,Tconv) == 10)
+%                 obj.init_estimate(ksi,gamma);
+%             end
+
         end
         
         function init_estimate(obj,ksi,gamma)

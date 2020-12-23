@@ -4,15 +4,15 @@
 % 不考虑无人机动力学，仅考虑质点
 
 
-clear all; close all;
+clear all; close all;clc
 
 % define total simulation time
 num_uav = 4;
 v_x = 2;
 num_formation = 3;
 accel = 15;
-alter_a = 10;
-dt = 0.01;
+alter_a = 3;
+dt = 0.005;
 tspan = 30;
 
 x_start = 0;
@@ -59,7 +59,7 @@ F1.cal_matrices()
 K1_single=[-5,-5];
 
 % define anonymous function for simulation
-Tconv = 100000;
+Tconv = 2000;
 dfs_control = @(t,ksi) controller_dfs_variant(t,ksi,K1_single,F1,dt,Tconv,v_x,alter_a);
 
 % simulate on uav dynamics
@@ -98,3 +98,4 @@ end
 
 [t,state]=RK4(dfs_control,[0 tspan],state0,dt);
 plot_pos(t,state);
+plot_log(F1)
