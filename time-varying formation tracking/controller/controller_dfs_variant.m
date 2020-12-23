@@ -52,7 +52,7 @@ function ksi_dot = controller_dfs_variant(t,ksi,K1_single,Formations,h,Tconv,v_x
     -(kron(eye(N),B2*K1)-kron(L(:,:,index),B2*K2))*H+kron(eye(N),B2)*Hv_dot;
     
     %% obstacle avoidance modification
-    CorectAcl=obstacle(ksi,ksi_dot,alter_a);
+    CorectAcl=obstacle_simple(ksi,alter_a);
     ksi_dot=ksi_dot+CorectAcl;
     
 end

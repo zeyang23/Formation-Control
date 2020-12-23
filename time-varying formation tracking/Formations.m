@@ -128,18 +128,31 @@ classdef Formations < handle
             
             for k=1:obj.formation_number
                 estimator_state_dot=-obj.Laplacians(:,:,k)*obj.global_error_estimate(:,k);
-                global_error_estimate_dot=obj.info_rate*(obj.local_error(:,k)-obj.global_error_estimate(:,k))...
-                                         -obj.Laplacians(:,:,k)*(obj.global_error_estimate(:,k)+obj.estimator_state(:,k));
+%                 global_error_estimate_dot=obj.info_rate*(obj.local_error(:,k)-obj.global_error_estimate(:,k))...
+%                                          -obj.Laplacians(:,:,k)*(obj.global_error_estimate(:,k)+obj.estimator_state(:,k));
                 
                 obj.estimator_state(:,k)=obj.estimator_state(:,k)+estimator_state_dot*h;
+                
+                global_error_estimate_dot=-obj.Laplacians(:,:,k)*(obj.global_error_estimate(:,k));
                     
                 obj.global_error_estimate(:,k)=obj.global_error_estimate(:,k)+global_error_estimate_dot*h;
+                
             end
+            
             obj.update_counter();  
             if (mod(obj.decision_counter,Tconv) == 0)
                 obj.make_decision();
                 obj.init_estimate(ksi,gamma);
             end        
+%             if (mod(obj.decision_counter,Tconv) == 0)
+%                 obj.make_decision();
+%                 
+%             end    
+%             
+%             if (mod(obj.decision_counter,Tconv) == 10)
+%                 obj.init_estimate(ksi,gamma);
+%             end
+
         end
         
         function init_estimate(obj,ksi,gamma)
