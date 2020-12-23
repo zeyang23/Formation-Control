@@ -7,8 +7,8 @@ connect1=[1,2;2,3;3,4;4,1];
 connects={connect1,connect2};
 
 
-Target1 = [85,5;85,-5;75,-5;75,5];
-Target2 = [90,0;88,0;84,0;82,0];
+Target1 = [18,1*rand();18,-1*rand();16,-1*rand();16,1*rand()];
+Target2 = [20,0;18,0;17,0;16,0];
 Targets(:,:,1) = Target1;
 Targets(:,:,2) = Target2;
 
@@ -19,11 +19,15 @@ dt = 0.01;
 tspan = 30;
 
 % define initial state for all agents
-ksi0_1 = [5,0,5,0]';
-ksi0_2 = [5,0,-5,0]';
-ksi0_3 = [-5,0,-5,0]';
-ksi0_4 = [-5,0,5,0]';
-ksi0 = [ksi0_1;ksi0_2;ksi0_3;ksi0_4];
+% define initial state for all agents
+parx=2.5;pary=0;num=num_uav;
+ksi0=zeros(4*num,1);
+for i=1:num
+    rho=rand()*2.5;
+    theta=rand()*2*pi;
+    ksi0(4*i-3,1)=parx+rho*cos(theta);
+    ksi0(4*i-1,1)=pary+rho*sin(theta);
+end
 pos0 = get_pos(ksi0);
 
 F1 = Formations(Targets,connects);
@@ -60,4 +64,7 @@ for t = 0:dt:tspan
 	state_new = uav_formation_update(ksi_dot,quads,noise);
 	state = [state,state_new];
 end
-plot_pos([0:dt:tspan],state)
+t = [0:dt:tspan];
+animate_pos(t,state,10000);
+hold off;
+plot_pos(t,state);
