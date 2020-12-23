@@ -12,9 +12,19 @@ classdef Formations < handle
         global_error;
         local_error;
         
+        % formation error log
+        % every row is the global error trajectory of one formation
+        global_error_log
+        
+        % define as cell
+        % each matrix in the cell is the local error trajectory of one formation
+        local_error_log           
+        global_error_estimate_log 
+        estimator_state_log
+        
         % parameters for dynamic formation selection
         decision_counter; % used to config when to make decisions
-        global_error_estimate; % 
+        global_error_estimate; 
         estimator_state;
         info_rate;
     end
@@ -27,6 +37,7 @@ classdef Formations < handle
             item.current_index=1;
             item.formation_number = size(targets,3);
             item.decision_counter=1;
+     
         end
                
         function cal_matrices(obj)
@@ -102,10 +113,18 @@ classdef Formations < handle
             
             if (obj.decision_counter == 1)
                 obj.init_estimate(ksi,gamma);
+                obj.initialize_log();   
             end  
             
             obj.cal_global_error(ksi);
             obj.cal_local_error(ksi);
+            
+            % write in log
+            if (obj.decision_counter == 1)
+                
+            else
+                obj.update_log();
+            end
             
             for k=1:obj.formation_number
                 estimator_state_dot=-obj.Laplacians(:,:,k)*obj.global_error_estimate(:,k);
@@ -130,6 +149,8 @@ classdef Formations < handle
             
             obj.global_error_estimate=obj.local_error;
             obj.estimator_state=zeros(obj.robot_number,obj.formation_number);
+            
+                     
         end
         
         function update_counter(obj)
@@ -140,6 +161,29 @@ classdef Formations < handle
             obj.cal_global_error(ksi);
             [~,index]=min(obj.global_error);
             obj.current_index=index;
+        end
+        
+        function initialize_log(obj)
+            % initialize log
+            obj.global_error_log=obj.global_error;
+            obj.local_error_log = cell(1,obj.formation_number);
+            obj.global_error_estimate_log = cell(1,obj.formation_number);
+            obj.estimator_state_log = cell(1,obj.formation_number);
+            
+            for m =1:obj.formation_number
+                obj.local_error_log{m}=obj.local_error(:,m);
+                obj.global_error_estimate_log{m}=obj.global_error_estimate(:,m);
+                obj.estimator_state_log{m}=obj.estimator_state(:,m);
+            end
+        end
+        
+        function update_log(obj)
+            obj.global_error_log=[obj.global_error_log,obj.global_error];
+            for m =1:obj.formation_number
+                obj.local_error_log{m}=[obj.local_error_log{m},obj.local_error(:,m)];
+                obj.global_error_estimate_log{m}=[obj.global_error_estimate_log{m},obj.global_error_estimate(:,m)];
+                obj.estimator_state_log{m}=[obj.estimator_state_log{m},obj.estimator_state(:,m)];
+            end
         end
         
     end
