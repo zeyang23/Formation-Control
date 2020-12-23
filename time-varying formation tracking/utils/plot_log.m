@@ -49,4 +49,20 @@ function plot_log(F1)
         legend(labels)
     end
     
+    figure()
+    number = 0;
+    hold on
+    for i=1:F1.formation_number
+        subplot(F1.formation_number,1,i)
+        number = 0;
+        hold on
+        for j=1:F1.robot_number
+            number = number+1;
+            plot(ts,F1.global_error_estimate_log{i}(j,:))
+            labels{number} = ['robot index: ',num2str(j),' formation index: ',num2str(i)];
+        end
+        legend(labels)
+    end
+        
+    
 end

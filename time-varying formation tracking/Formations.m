@@ -128,13 +128,17 @@ classdef Formations < handle
             
             for k=1:obj.formation_number
                 estimator_state_dot=-obj.Laplacians(:,:,k)*obj.global_error_estimate(:,k);
-                global_error_estimate_dot=obj.info_rate*(obj.local_error(:,k)-obj.global_error_estimate(:,k))...
-                                         -obj.Laplacians(:,:,k)*(obj.global_error_estimate(:,k)+obj.estimator_state(:,k));
+%                 global_error_estimate_dot=obj.info_rate*(obj.local_error(:,k)-obj.global_error_estimate(:,k))...
+%                                          -obj.Laplacians(:,:,k)*(obj.global_error_estimate(:,k)+obj.estimator_state(:,k));
                 
                 obj.estimator_state(:,k)=obj.estimator_state(:,k)+estimator_state_dot*h;
+                
+                global_error_estimate_dot=-obj.Laplacians(:,:,k)*(obj.global_error_estimate(:,k));
                     
                 obj.global_error_estimate(:,k)=obj.global_error_estimate(:,k)+global_error_estimate_dot*h;
+                
             end
+            
             obj.update_counter();  
             if (mod(obj.decision_counter,Tconv) == 0)
                 obj.make_decision();
