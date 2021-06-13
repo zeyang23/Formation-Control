@@ -19,7 +19,7 @@ L(:,:,4) = cal_Lap(connect4,4);
 control=@(t,ksi) controller_3d(t,ksi,K1_single,@cal_h,@cal_hvdot,L);
 
 % define total simulation time
-tspan = [0,60];
+tspan = [0,10];
 
 % define initial state for all agents
 ksi0_1 = [3,0,0,0,0,0]';
@@ -34,8 +34,10 @@ h =0.01;
 
 % solve the IVP using RK4
 [t,state] = RK4(control,tspan,ksi0,h);
-plot_pos_3d(t,state)
+% plot_pos_3d(t,state)
 % plot_vel(t,state)
+
+animation(t,state)
 
 % define desired trajectory
 function H=cal_h(t,ksi)
