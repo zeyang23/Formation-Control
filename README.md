@@ -12,3 +12,8 @@ Reference: **_Graph Theoretic Methods in Multiagent Networks_**
 
 ## Voronoi coverage
 ![animation1](https://user-images.githubusercontent.com/50078363/173807839-2b839d43-0405-414e-8b2e-219493eab9c8.gif)
+
+## Formation scaling
+Reference: **_Formation control with size scaling via a complex Laplacian-based approach_**
+
+![image](https://user-images.githubusercontent.com/50078363/173808713-c76cca91-b93e-46d7-8b3b-f3f1bbdf3e60.png)
