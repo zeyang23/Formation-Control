@@ -11,9 +11,9 @@ Reference: **_Graph Theoretic Methods in Multiagent Networks_**
 ![无人机集群2](https://user-images.githubusercontent.com/50078363/173805061-0a06b6cf-4092-4356-beb0-6b6921d12925.gif)
 
 ## Voronoi coverage
-![animation1](https://user-images.githubusercontent.com/50078363/173807839-2b839d43-0405-414e-8b2e-219493eab9c8.gif)
+![test](https://user-images.githubusercontent.com/50078363/173810169-7160c33f-03f8-4da7-a33f-91e35f091464.gif)
 
 ## Formation scaling
 Reference: **_Formation control with size scaling via a complex Laplacian-based approach_**
 
-![image](https://user-images.githubusercontent.com/50078363/173808713-c76cca91-b93e-46d7-8b3b-f3f1bbdf3e60.png)
+![image](https://user-images.githubusercontent.com/50078363/173810331-98cd00a1-e461-4b98-bc4e-276544254b9f.png)
